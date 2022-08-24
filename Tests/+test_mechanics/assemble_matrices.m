@@ -1,6 +1,6 @@
 % assembling matrices
 
-Np = msh.number_of_elements;
+Np = msh.number_of_nodes;
 
 N = Nodal2D(Operators.grad);
 S11 = FEMatrixConstructor();
@@ -75,5 +75,7 @@ xfun = @(~, x, varargin)( wm^2*rhos(modelled_elements).*x(1,:) );
 yfun = @(~, x, varargin)( wm^2*rhos(modelled_elements).*x(2,:) );
 fx = FEMatrixConstructor();
 fx.assemble_matrix( Nodal2D(), IDfun(), s_x, modelled_elements, msh);
-fx = fx.finalize();
-fy = FEMatrixConstructor().assemble_with_fun( Nodal2D(), IDfun(), s_y, modelled_elements, msh).finalize();
+fx = fx.finalize(Np, 1);
+
+fy = FEMatrixConstructor().assemble_matrix( Nodal2D(), IDfun(), s_y, modelled_elements, msh);
+fy = fy.finalize(Np, 1);

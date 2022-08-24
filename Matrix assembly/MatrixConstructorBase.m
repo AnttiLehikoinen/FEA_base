@@ -15,6 +15,14 @@ classdef MatrixConstructorBase < handle
         function add_coordinates(this, I, J)
             assert(size(I, 1)==1)
             assert(size(J, 1)==1)
+
+            %expanding if needed
+            if size(I, 2) == 1
+                I = repmat(I, 1, numel(J));
+            end
+            if size(J, 2) == 1
+                J = repmat(J, 1, numel(I));
+            end
             
             this.coordinates = [this.coordinates, {[I;J]}];
         end

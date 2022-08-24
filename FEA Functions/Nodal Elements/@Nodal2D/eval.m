@@ -46,7 +46,7 @@ if size(varargin{1}, 1) == 4
     detF = varargin{2};
 else
     F = msh.evaluate_mapping(varargin{1}, X);
-    detF = matrixDeterminant(F);
+    detF = msh.mapping_determinant(F);
 end
 
 %evaluating global gradient / curl

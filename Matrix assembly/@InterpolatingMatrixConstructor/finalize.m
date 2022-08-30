@@ -1,19 +1,6 @@
-function [PT, varargout] = assemble_TotalMasterSlaveMatrix(Ntot, P, varargin)
-%assemble_TotalMasterSlaveMatrix elimination matrix for master-slave
-%couplings.
-% 
-% [PT, otherNodes_new] = assemble_TotalMasterSlaveMatrix(Ntot, P, otherNodes)
-% generates a Ntot x N mapping matrix, with N <= Ntot
-% 
-% Each of the matrices in the cell array P{1,:} defines a part of the
-% mapping.
-% 
-% Alternatively P{1,c} can be a 3xN sparse triplet array.
-%
-% Optionally, P{2,:} and P{3,:} can contain index arrays for
-% permuting/shifting the rows and columns of the P-matrices, respectively.
-%
-% Copyright (c) 2016 Antti Lehikoinen / Aalto University
+function Pout = finalize(this, Ntot)
+
+P = this.parts;
 
 %determining free nodes
 N_Ps = size(P, 2); %number of interpolation blocks given
@@ -54,9 +41,9 @@ for kp = 1:N_Ps
     Pinds{3,kp} = E';
 end
 
-slaveNodes = unique( horzcat( Pinds{1,:} ) );
+minion_nodes = unique( horzcat( Pinds{1,:} ) );
 
-[freeNodes, IA] = setdiff(1:Ntot, slaveNodes);
+[freeNodes, IA] = setdiff(1:Ntot, minion_nodes);
 
 Np_free = numel(freeNodes);
 indsOfFree = zeros(1, Ntot);
@@ -66,34 +53,25 @@ indsOfFree(IA) = 1:Np_free;
 
 %constructing total matrix
 %PT = [];
-PT = MatrixConstructorBase();
 
 %free nodes
 %PT = sparseAdd(freeNodes, 1:Np_free, ones(1,Np_free), PT);
-PT.add_triplets(freeNodes, 1:Np_free, ones(1,Np_free));
+this.add_triplets(freeNodes, 1:Np_free, ones(1,Np_free));
 
 %slave nodes
 for kp = 1:N_Ps
     %checking for possibly zero input
     inds = find( Pinds{3,kp} ~= 0 );
     
+    if isempty(inds)
+        continue
+    end
+    
     %PT = sparseAdd( Pinds{1,kp}(inds), indsOfFree( Pinds{2,kp}(inds) ), Pinds{3,kp}(inds), PT );
-    PT.add_triplets(Pinds{1,kp}(inds), indsOfFree( Pinds{2,kp}(inds) ), Pinds{3,kp}(inds));
+    this.add_triplets(Pinds{1,kp}(inds), indsOfFree( Pinds{2,kp}(inds) ), Pinds{3,kp}(inds));
     
     %any( ~indsOfFree( Pinds{2,kp}(inds) ) )
 end
-PT = PT.finalize(Ntot, Np_free);
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%updating node indices
-if numel(varargin) == 0
-    return;
-end
-
-varargout = cell( size(varargin) );
-for k = 1:numel(varargin)
-    varargout{k} = indsOfFree( varargin{k} );
-end
+Pout = finalize@MatrixConstructorBase(this, Ntot, Np_free);
 
 end

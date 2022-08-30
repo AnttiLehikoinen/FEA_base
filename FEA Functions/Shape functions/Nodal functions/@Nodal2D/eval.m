@@ -22,7 +22,7 @@ function N = eval(this, k, X, msh, varargin)
 %       to evaluate on.
 %
 %
-% vals = eval(this, k, x_local, mapping, mapping_determinant)
+% vals = eval(this, k, x_local, mapping)
 %
 %   The same as above, but specify the local-to-global mapping
 %   and its determinant instead of the element indices. Mainly
@@ -30,9 +30,7 @@ function N = eval(this, k, X, msh, varargin)
 %
 %   Input arguments:
 %
-%       * mapping : see SimpleMesh.getMappingMatrix
-%
-%       * mapping_determinant : see MatrixDeterminant
+%       * mapping : a MappingArrayBase object
 
 Nref = this.eval_ref(k, X, msh);
 if this.operator == Operators.I
@@ -41,16 +39,15 @@ if this.operator == Operators.I
 end
 
 %getting mapping
-if size(varargin{1}, 1) == 4
+if isa(varargin{1}, 'MappingArrayBase')
     F = varargin{1};
-    detF = varargin{2};
 else
-    F = msh.evaluate_mapping(varargin{1}, X);
-    detF = msh.mapping_determinant(F);
+    els = varargin{1};
+    F = msh.evaluate_mapping(els, X);
 end
 
 %evaluating global gradient / curl
-N = matrixTimesVector(F, Nref, true, true, detF); %gradient
+N = F'\Nref;
 if this.operator == Operators.grad
     return;
 elseif this.operator == Operators.curl
@@ -59,4 +56,5 @@ elseif this.operator == Operators.curl
 else
     error('Invalid operator');
 end
+
 end

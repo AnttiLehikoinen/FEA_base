@@ -1,7 +1,7 @@
-function [x, w] = get_2DtriangleIntegrationPoints(p)
-%get_2DtriangleIntegrationPoints Gaussian quadrature points and weights.
+function [x, w] = get_integration_points(~, p, varargin)
+%get_integration_points Gaussian quadrature points and weights.
 %
-% [x, w] = get_2DtriangleIntegrationPoints(p)
+% [x, w] = get_integration_points(p)
 % returns the integration points x and weights w so that a bivariate
 % polynomial of order <= p is integrated exactly. (Up to p = 19).
 %

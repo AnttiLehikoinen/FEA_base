@@ -63,7 +63,7 @@ periodicity_coefficient = [(abs(cos(asector))>1e-4).*cos(asector)*ones(1, numel(
     (abs(sin(asector))>1e-4).*sin(asector)*ones(1, numel(n_cw))];
 BC.add_part([master_nodes; minion_nodes; periodicity_coefficient]);
 
-%finalize the all-to-free-dofs mapping matrix
+%finalize the all-to-free-dofs 
 P = BC.finalize(2*Np);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

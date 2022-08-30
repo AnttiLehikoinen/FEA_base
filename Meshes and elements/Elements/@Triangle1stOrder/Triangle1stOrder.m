@@ -7,8 +7,6 @@ classdef Triangle1stOrder
     end
 
     methods
-        function [x, w] = get_integration_points(~, order, ~)
-            [x, w] = get_2DtriangleIntegrationPoints(order);
-        end
+        [x, w] = get_integration_points(~, order, varargin)
     end
 end

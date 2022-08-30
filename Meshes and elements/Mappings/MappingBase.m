@@ -14,5 +14,6 @@ classdef (Abstract) MappingBase < handle
         % detF = mapping_determinant(this, elements, local_coordinates)
         % detF = mapping_determinant(this, mapping_matrix)
         detF = mapping_determinant(this, varargin)
+        
     end
 end

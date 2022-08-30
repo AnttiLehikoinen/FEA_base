@@ -19,6 +19,7 @@ classdef (Abstract) FEMeshBase < AbstractMeshBase
     end
     methods
         function detF = mapping_determinant(this, varargin)
+            error('Should not be called')
             detF = this.mapping.mapping_determinant(varargin{:});
         end
         function [F, F0] = evaluate_mapping(this, varargin)

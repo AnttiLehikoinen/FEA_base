@@ -35,18 +35,15 @@ this.number_of_columns = Ncols;
 
 %mapping and mapping determinant
 if msh.mapping.order > 0
-    detF = zeros(N_quad, Ne);
     F = cell(N_quad, 1);
     for k_quad = 1:N_quad
         F{k_quad} = msh.evaluate_mapping(elements, x_quad(:,k_quad));
-        detF(k_quad,:) = msh.mapping_determinant(F{k_quad});
     end
-    detFun = @(kq)( detF(kq,:) );
     Ffun = @(kq)( F{kq} );
+    detFun = @(kq)(F{kq}.determinant );
 else
     F = msh.evaluate_mapping(elements);
-    detF = msh.mapping_determinant(F);
-    detFun = @(kq)( detF );
+    detFun = @(kq)( F.determinant );
     Ffun = @(kq)( F );
 end
 
@@ -54,7 +51,7 @@ end
 Fvals_test = cell(N_quad, N_test);
 for k_quad = 1:N_quad
     for k_test = 1:N_test
-        Fvals_test{k_quad, k_test} = fun_test.eval(k_test, x_quad(:,k_quad), msh, Ffun(k_quad), detFun(k_quad), elements);
+        Fvals_test{k_quad, k_test} = fun_test.eval(k_test, x_quad(:,k_quad), msh, Ffun(k_quad));
     end
 end
 if symmetric
@@ -64,7 +61,7 @@ else
     for k_quad = 1:N_quad
         for k_shape = 1:N_shape
             Fvals_shape{k_quad,k_shape} = ...
-                fun_shape.eval(k_shape, x_quad(:,k_quad), msh, Ffun(k_quad), detFun(k_quad), elements);
+                fun_shape.eval(k_shape, x_quad(:,k_quad), msh, Ffun(k_quad));
         end
     end
 end

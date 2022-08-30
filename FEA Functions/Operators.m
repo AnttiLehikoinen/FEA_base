@@ -1,6 +1,9 @@
 classdef Operators < handle
+    %Operators Enumerations of differential operators
     enumeration
-        %operator types
-        div, grad, curl, I
+        div %Divergence
+        grad %Gradient
+        curl %Curl
+        I %Identity
     end
 end

@@ -8,7 +8,11 @@ classdef FEMatrixConstructor < MatrixConstructorBase
             
             this = this.assemble_matrix(test_function, IDfun, material_property, ...
                 elements, mesh);
-        end
-        
+        end 
+    end
+    
+    methods (Static)
+        M = assemble_simple(test_function, shape_function, material_property, ...
+            elements, mesh, N)
     end
 end

@@ -11,6 +11,7 @@ classdef (Abstract) AbstractMeshBase < handle
     methods
         x0 = element_centers(this, elements)
         fill(this, varargin)
+        trisurf(this, varargin)
         triplot(this, varargin)
         plot_nodes(this, ns, varargin)
     end

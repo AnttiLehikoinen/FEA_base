@@ -1,4 +1,5 @@
 classdef TriMesh < FEMeshBase
+    %TriMesh Basic first-order triangular FE mesh.
     properties
         t2e %triangle-to-edges incidence
         e2t %edge-to-triangle indicence

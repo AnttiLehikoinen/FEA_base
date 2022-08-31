@@ -11,6 +11,9 @@ nodes = D.nodes;
 elements = D.elements;
 msh = TriMesh(D.nodes, D.elements);
 
+figure(1); clf; hold on; box on; axis equal;
+msh.triplot([]);
+
 % parsing material properties
 
 %iron

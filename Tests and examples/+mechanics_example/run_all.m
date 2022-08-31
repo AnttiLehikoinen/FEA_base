@@ -1,5 +1,5 @@
 %run_all Run the entire mechanics example.
 
-test_mechanics.initialize_stuff;
-test_mechanics.assemble_matrices;
-test_mechanics.solve_and_visualize;
+mechanics_example.initialize_stuff;
+mechanics_example.assemble_matrices;
+mechanics_example.solve_and_visualize;

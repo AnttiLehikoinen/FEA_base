@@ -21,12 +21,6 @@ classdef (Abstract) MappingBase < handle
         % given local coordinates on the reference element.
         %
         % Returns a vectorized mapping F of the MappingArrayBase class.
-        [F, F0] = evaluate_mapping(this, elements, local_coordinates)
-        
-        %mapping_determinant Mapping Jacobian determinan
-        % detF = mapping_determinant(this, elements, local_coordinates)
-        % detF = mapping_determinant(this, mapping_matrix)
-        detF = mapping_determinant(this, varargin)
-        
+        [F, F0] = evaluate_mapping(this, elements, local_coordinates)      
     end
 end

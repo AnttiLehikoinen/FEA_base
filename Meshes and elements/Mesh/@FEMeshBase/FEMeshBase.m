@@ -10,7 +10,7 @@ classdef (Abstract) FEMeshBase < AbstractMeshBase
     % Finally, the class defines functions for getting the integration
     % points (quadrature) for the reference element, and assembly data for
     % matrix assembly.
-    properties
+    properties (Abstract)
         nodes
         elements
     end

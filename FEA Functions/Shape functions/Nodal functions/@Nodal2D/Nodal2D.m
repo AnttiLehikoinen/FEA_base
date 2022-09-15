@@ -74,7 +74,6 @@ classdef Nodal2D < ShapeFunctionBase
         end
         
         
-        
         function [Nf, order, Nvars] = get_data(this, msh)
             %getData Data for matrix assembly.
             %

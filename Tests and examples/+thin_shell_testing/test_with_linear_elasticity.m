@@ -1,4 +1,3 @@
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % creating mesh
 
@@ -7,7 +6,7 @@ nodes = [0 0; 1 0; 1 1; 0 1;
     1 2; 0 2]';
 
 %triangle mesh
-%{
+%%{
 msh = TriMesh();
 msh.nodes = nodes;
 msh.elements = [1 2 4; 2 3 4;
@@ -17,7 +16,7 @@ elements_with_source = [2 3];
 %}
 
 %quad mesh
-%%{
+%{
 msh = LinearQuadmesh();
 msh.nodes = nodes;
 msh.elements = [1 2 3 4;5 6 7 8]';
@@ -44,7 +43,6 @@ iron.mesh = msh;
 
 glue = struct();
 E = 3.35e9;
-%E = 5e8;
 nu = 0.3; %FIXME check this
 glue.stiffness_tensor = E/((1+nu)*(1-2*nu)) *[1-nu nu 0;nu 1-nu 0;0 0 (1-2*nu)/2];
 glue.elements = [];

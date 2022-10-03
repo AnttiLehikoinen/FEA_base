@@ -31,6 +31,7 @@ edef_new = new_node_indices(edef_old);
 
 %shell mesh
 msh_shell = ShellMesh2D();
-msh_shell.nodes = msh.nodes;
+%msh_shell.nodes = msh.nodes;
+msh_shell.parent_mesh = msh;
 msh_shell.elements = [edef_old; flipud(edef_new)];
 

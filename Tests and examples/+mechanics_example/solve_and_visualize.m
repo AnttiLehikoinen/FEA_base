@@ -58,16 +58,18 @@ for k = 1:numel(materials)
     els = 1:Ne;
     stiff = materials(k).stiffness_tensor;
     
-    for kf = 1:3
+    for kf = 1:size(msh_shell.elements,1)
         S(:,els) = S(:,els) + stiff*bsxfun(@times, J1*N.eval(kf, [0;0], msh_shell, els), ...
-            U( mshp.elements(kf,els) )')  + ...
+            U( msh_shell.elements(kf,els) )')  + ...
             stiff*bsxfun(@times, J2*N.eval(kf, [0;0], msh_shell, els), ...
-            U( Np+mshp.elements(kf,els) )');
+            U( Np+msh_shell.elements(kf,els) )');
     end
 end
 Svm = sqrt( S(1,:).^2 - S(1,:).*S(2,:) + S(2,:).^2 + 3*S(3,:).^2 );
 
-figure(5); clf; hold on; box on; axis equal square;
-msh_shell.fill([], Svm/1e6, 'linestyle', 'none'); colormap('jet'); colorbar;
+%figure(5); clf; hold on; box on; axis equal square;
+msh_shell.parent_mesh = mshp;
+msh_shell.fill([], Svm/1e6, 'linewidth', 2);
+msh_shell.parent_mesh = msh;
 %caxis([0 200]);
 title('Von Mises stress (MPa)');

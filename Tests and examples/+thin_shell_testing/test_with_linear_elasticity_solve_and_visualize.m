@@ -8,13 +8,27 @@ modelled_elements = [];
 
 %solving
 U = P * ( (P'*[S11 S12;S12' S22]*P) \ (P'*[fx;fy]) );
+
+%solving with boundary force
+%{
+d_up = 1e-5; %fixed displacement
+U = zeros(2*Np, 1);
+U(Np + n_up) = d_up;
+
+[I, J] = find(P);
+nfree = unique(I);
+
+Stot = [S11 S12;S12' S22];
+U(nfree) = Stot(nfree,nfree) \ -(Stot(nfree,:)*U);
+%}
+
 U = full(U);
 
 %creating a mesh view for visualization
-%mshp = DisplacedMeshView(msh);
-%mshp.displacement = U*diplacement_multiplier_for_plotting;
+mshp = DisplacedMeshView(msh);
+mshp.displacement = U*diplacement_multiplier_for_plotting;
 
-%%{
+%{
 mshp = LinearQuadmesh();
 mshp.elements = msh.elements;
 mshp.nodes = msh.nodes;
@@ -42,11 +56,13 @@ for k = 1:numel(materials)
     els = materials(k).elements;
     stiff = materials(k).stiffness_tensor;
 
-    for kf = 1:3
-        S(:,els) = S(:,els) + stiff*bsxfun(@times, J1*N.eval(kf, [0.25;0.25], msh, els), ...
+    for kf = 1:size(msh.elements,1)
+        %%{
+        S(:,els) = S(:,els) + stiff*bsxfun(@times, J1*N.eval(kf, [0;0], msh, els), ...
             U( msh.elements(kf,els) )')  + ...
-            stiff*bsxfun(@times, J2*N.eval(kf, [0.25;0.25], msh, els), ...
+            stiff*bsxfun(@times, J2*N.eval(kf, [0;0], msh, els), ...
             U( Np+msh.elements(kf,els) )');
+        %}
     end
 end
 Svm = sqrt( S(1,:).^2 - S(1,:).*S(2,:) + S(2,:).^2 + 3*S(3,:).^2 );
@@ -56,6 +72,7 @@ mshp.fill([], Svm/1e6, 'linestyle', 'none'); colormap('jet'); colorbar;
 %caxis([0 200]);
 title('Von Mises stress (MPa)');
 
+%return
 
 %same for shell elements
 Ne = msh_shell.number_of_elements;
@@ -73,17 +90,17 @@ for k = 1:numel(materials)
     
     for kf = 1:4
         S(:,els) = S(:,els) + stiff*bsxfun(@times, J1*N.eval(kf, [0;0], msh_shell, els), ...
-            U( mshp.elements(kf,els) )')  + ...
+            U( msh_shell.elements(kf,els) )')  + ...
             stiff*bsxfun(@times, J2*N.eval(kf, [0;0], msh_shell, els), ...
-            U( Np+mshp.elements(kf,els) )');
+            U( Np+msh_shell.elements(kf,els) )');
 
-        G = N.eval(kf, [0;0], msh_shell, []) .* U( Np+mshp.elements(kf,els) )'
+        G = N.eval(kf, [0;0], msh_shell, []) .* U( Np+msh_shell.elements(kf,els) )';
     end
 end
 Svm_shell = sqrt( S(1,:).^2 - S(1,:).*S(2,:) + S(2,:).^2 + 3*S(3,:).^2 );
 Svm_shell/1e6
 
-figure(5); clf; hold on; box on; axis equal square;
-msh_shell.fill([], Svm_shell/1e6, 'linestyle', 'none'); colormap('jet'); colorbar;
+%figure(5); clf; hold on; box on; axis equal square;
+msh_shell.fill([], Svm_shell/1e6); colormap('jet'); colorbar;
 %caxis([0 200]);
 title('Von Mises stress (MPa)');

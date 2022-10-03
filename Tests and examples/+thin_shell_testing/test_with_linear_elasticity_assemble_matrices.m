@@ -31,15 +31,21 @@ S22 = S22.finalize(Np, Np);
 
 %matrix for boundary conditions
 Pc = InterpolatingMatrixConstructor();
-Pc.add_zeros([1 2 Np+[1 2]]);
+Pc.add_zeros([1 Np+[1 2]]);
+
+%n_up = find(msh.nodes(2,:)==2);
+%Pc.add_zeros([n_up Np+n_up]);
+
 P = Pc.finalize(msh.number_of_nodes*2);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % volume stress vector
 
+Fx = 2e5;
 Fy = 1e6;
 
-fx = zeros(Np, 1);
+fx = FEMatrixConstructor().assemble_matrix( Nodal2D(), IDfun(), Fx, elements_with_source, msh);
+fx = fx.finalize(Np, 1);
 
 fy = FEMatrixConstructor().assemble_matrix( Nodal2D(), IDfun(), Fy, elements_with_source, msh);
 fy = fy.finalize(Np, 1);

@@ -42,10 +42,8 @@ glue = struct();
 glue.density = 3000;
 E = 3.35e9;
 %E = 5e8;
+%E = 1e9;
 nu = 0.3; %FIXME check this
-
-E = 1.6000e+11;
-nu = 0.24;
 
 glue.stiffness_tensor = E/((1+nu)*(1-2*nu)) *[1-nu nu 0;nu 1-nu 0;0 0 (1-2*nu)/2];
 glue.elements = [];

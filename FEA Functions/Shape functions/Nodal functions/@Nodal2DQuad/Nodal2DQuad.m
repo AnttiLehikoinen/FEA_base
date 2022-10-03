@@ -10,23 +10,23 @@ classdef Nodal2DQuad < Nodal2D
                 x = X(1,:);
                 y = X(2,:);
                 if this.operator == Operators.I
-                    if k == 3
-                        Nref = 1/4*(1 - x)*(1 - y);
-                    elseif k == 4
-                        Nref = 1/4*(1 + x)*(1 - y);
-                    elseif k == 1
-                        Nref = 1/4*(1 + x)*(1 + y);
+                    if k == 1
+                        Nref = 1/4*(1 - x).*(1 - y);
                     elseif k == 2
-                        Nref = 1/4*(1 - x)*(1 + y);
+                        Nref = 1/4*(1 + x).*(1 - y);
+                    elseif k == 3
+                        Nref = 1/4*(1 + x).*(1 + y);
+                    elseif k == 4
+                        Nref = 1/4*(1 - x).*(1 + y);
                     end
                 else
-                    if k == 3
+                    if k == 1
                         Nref = 1/4*[-(1-y); -(1-x)];
-                    elseif k == 4
-                        Nref = 1/4*[(1-y); -(1+x)];
-                    elseif k == 1
-                        Nref = 1/4*[(1+y); (1+x)];
                     elseif k == 2
+                        Nref = 1/4*[(1-y); -(1+x)];
+                    elseif k == 3
+                        Nref = 1/4*[(1+y); (1+x)];
+                    elseif k == 4
                         Nref = 1/4*[-(1+y); (1-x)];
                     end
                 end
@@ -34,7 +34,6 @@ classdef Nodal2DQuad < Nodal2D
                 error('Shape function not implemented.');
             end
         end
-        
         
         function [Nf, order, Nvars] = get_data(this, msh)
             %getData Data for matrix assembly.

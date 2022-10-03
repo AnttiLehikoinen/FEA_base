@@ -19,7 +19,7 @@ classdef ThinShellMapping2D < MappingBase
             
             unit_normal = [0 -1;1 0] * (tangent ./ sqrt(sum(tangent.^2,1)));
             
-            Farr = [tangent; this.thickness * unit_normal];
+            Farr = [tangent; this.thickness * unit_normal]/2;
             F = MappingArray2x2(Farr);
         end
     end

@@ -29,5 +29,7 @@ classdef (Abstract) ReferenceElementBase < handle
         %
         % [x, w] = get_integration_points(this, order, mesh)
         [x, w] = get_integration_points(this, order, mesh)
+
+        F_msh = spawn_mesh_specific_shape_function(F_base, mesh)
     end
 end

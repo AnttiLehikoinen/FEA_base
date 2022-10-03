@@ -13,6 +13,7 @@ classdef (Abstract) FEMeshBase < AbstractMeshBase
     properties (Abstract)
         nodes
         elements
+        edges
     end
     properties (Abstract, Constant)
         %reference_element Reference element for the mesh.
@@ -26,6 +27,10 @@ classdef (Abstract) FEMeshBase < AbstractMeshBase
         mapping
     end
 
+    properties (Dependent)
+        number_of_edges
+    end
+
     methods
         function this = FEMeshBase(nodes, elements, varargin)
             this.mapping.parent_mesh = this;
@@ -36,6 +41,7 @@ classdef (Abstract) FEMeshBase < AbstractMeshBase
         end
     end
     methods
+
         function detF = mapping_determinant(this, varargin)
             error('Should not be called')
             detF = this.mapping.mapping_determinant(varargin{:});
@@ -59,6 +65,8 @@ classdef (Abstract) FEMeshBase < AbstractMeshBase
             % By default, calls this.reference_element.get_integration_points
             [x, w] = this.reference_element.get_integration_points(order, this);
         end
+
+        plot_edges(this, inds, varargin)
         
         %get_assembly_parameters Matrix assemble paramaters.
         %
@@ -85,6 +93,14 @@ classdef (Abstract) FEMeshBase < AbstractMeshBase
         % and function of order n_fun over the reference element.
         [x_quad, w_quad, Nrows, Ncols, N_test, N_shape] = ...
             get_assembly_parameters(this, fun_test, fun_shape, varargin)
+
+        function n = get.number_of_edges(this)
+            n = size(this.edges, 2);
+        end
+
+        function F_msh = spawn_mesh_specific_shape_function(this, F)
+            F_msh = this.reference_element.spawn_mesh_specific_shape_function(F, this);
+        end
     end
 
 end

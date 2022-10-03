@@ -2,6 +2,8 @@ classdef ShellMesh2D < FEMeshBase
     properties
         nodes
         elements
+
+        edges
     end
     
     properties (Dependent)
@@ -23,5 +25,7 @@ classdef ShellMesh2D < FEMeshBase
         function set.thickness(this, v)
             this.mapping.thickness = v;
         end
+
+        fill(this, elements, varargin)
     end
 end

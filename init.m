@@ -5,3 +5,4 @@ addpath(genpath(cd())); %adding all folders to the path
 % [x] Thin-shell mapping
 % [] node duplication
 % [] test
+% [] view for quad meshes

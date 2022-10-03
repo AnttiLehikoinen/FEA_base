@@ -5,6 +5,7 @@ if nargin == 1 || isempty(elements)
 end
 msh = this.parent_mesh;
 
+
 Farr = [msh.nodes(:, msh.elements(2,elements)) - msh.nodes(:, msh.elements(1,elements));
     msh.nodes(:, msh.elements(3,elements)) - msh.nodes(:, msh.elements(1,elements))];
 F = MappingArray2x2(Farr);

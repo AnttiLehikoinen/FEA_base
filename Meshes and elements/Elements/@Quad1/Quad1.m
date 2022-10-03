@@ -20,6 +20,14 @@ classdef Quad1 < ReferenceElementBase
                 end
             end
         end
+
+        function F_msh = spawn_mesh_specific_shape_function(this, F_base, ~)
+            if isa(F_base, 'Nodal2D')
+                F_msh = Nodal2DQuad(F_base.operator);
+            else
+                error('Unhandled shape function.')
+            end
+        end
             
     end
 end

@@ -19,9 +19,9 @@ for k = 1:numel(materials)
     rhos(els) = mat.density;
     tens = mat.stiffness_tensor;
         
-    S11.assemble_matrix(N, N, reshape(J1'*tens*J1, [], 1), els, msh);
-    S22.assemble_matrix(N, N, reshape(J2'*tens*J2, [], 1), els, msh);
-    S12.assemble_matrix(N, N, reshape(J1'*tens*J2, [], 1), els, msh);
+    S11.assemble_matrix(N, N, reshape(J1'*tens*J1, [], 1), els, mat.mesh);
+    S22.assemble_matrix(N, N, reshape(J2'*tens*J2, [], 1), els, mat.mesh);
+    S12.assemble_matrix(N, N, reshape(J1'*tens*J2, [], 1), els, mat.mesh);
 end
 
 S11 = S11.finalize(Np, Np);
@@ -73,11 +73,12 @@ x0 = msh.element_centers(modelled_elements);
 s_x = wm^2 * rhos(modelled_elements) .* x0(1,:);
 s_y = wm^2 * rhos(modelled_elements) .* x0(2,:);
 
-xfun = @(~, x, varargin)( wm^2*rhos(modelled_elements).*x(1,:) );
-yfun = @(~, x, varargin)( wm^2*rhos(modelled_elements).*x(2,:) );
 fx = FEMatrixConstructor();
 fx.assemble_matrix( Nodal2D(), IDfun(), s_x, modelled_elements, msh);
 fx = fx.finalize(Np, 1);
 
 fy = FEMatrixConstructor().assemble_matrix( Nodal2D(), IDfun(), s_y, modelled_elements, msh);
 fy = fy.finalize(Np, 1);
+
+return
+%plotting free nodes

@@ -3,23 +3,24 @@ classdef TriMesh < FEMeshBase
     properties
         nodes
         elements
-        t2e %triangle-to-edges incidence
-        e2t %edge-to-triangle indicence
+        edges
+        edges_to_elements %triangle-to-edges incidence
+        elements_to_edges %edge-to-triangle indicence
     end
     properties (Constant)
         reference_element = Triangle1stOrder()
         mapping = TriMapping1stOrder()
     end
-    
-    %dependent utility stuff
-    properties (Dependent)
-        number_of_edges
-    end
 
     %getters for dependent properties
     methods
-        function n = get.number_of_edges(this)
-            n = size(this.edges, 2);
+        function this = TriMesh(varargin)
+            this = this@FEMeshBase(varargin{:});
+            if numel(varargin)
+                this.parse_incidence();
+            end
         end
+
+        parse_incidence(this)
     end
 end

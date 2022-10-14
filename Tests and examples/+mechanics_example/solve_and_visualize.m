@@ -67,9 +67,8 @@ for k = 1:numel(materials)
 end
 Svm = sqrt( S(1,:).^2 - S(1,:).*S(2,:) + S(2,:).^2 + 3*S(3,:).^2 );
 
-%figure(5); clf; hold on; box on; axis equal square;
 msh_shell.parent_mesh = mshp;
 msh_shell.fill([], Svm/1e6, 'linewidth', 2);
-msh_shell.parent_mesh = msh;
+msh_shell.parent_mesh = msh; %THIS IS IMPORTANT
 %caxis([0 200]);
 title('Von Mises stress (MPa)');

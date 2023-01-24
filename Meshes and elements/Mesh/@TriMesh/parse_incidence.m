@@ -26,4 +26,17 @@ for k = 1:size(this.elements_to_edges, 1)*0
 end
 
 %getting edge-to-element incidence
-warning('Edges-to-elements not yet implemented')
+this.edges_to_elements = zeros(2, this.number_of_edges);
+for k = 1:this.number_of_elements
+    for k2 = 1:size(this.elements,1)
+        edge_ind = abs(this.elements_to_edges(k2, k));
+        if this.edges_to_elements(1,edge_ind) == 0
+            this.edges_to_elements(1, edge_ind) = k;
+        else
+            this.edges_to_elements(2, edge_ind) = k;
+        end
+    end
+end     
+        
+
+end

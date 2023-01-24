@@ -1,4 +1,3 @@
-
 %material property array
 nu = ones(1, msh.number_of_elements);
 
